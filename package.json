@@ -1,5 +1,5 @@
 {
-  "name": "page",
+  "name": "one.com-page",
   "description": "Tiny client-side router",
   "version": "1.6.3",
   "license": "MIT",
@@ -39,5 +39,8 @@
   "files": [
     "index.js",
     "page.js"
-  ]
+  ],
+  "publishConfig": {
+    "registry": "http://npm.one.com"
+  }
 }
