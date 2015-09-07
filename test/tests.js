@@ -1,4 +1,4 @@
-/* globals before, beforeEach, after, afterEach, chai, expect, page, describe, it */
+/* globals before, after, beforeEach, afterEach, chai, expect, page, describe, it */
 (function() {
 
   'use strict';
@@ -287,7 +287,7 @@
         });
 
         it('should accommodate URL encoding', function(done) {
-          page('/long path with whitespace', function(ctx) {
+          page('/long%20path%20with%20whitespace', function(ctx) {
             expect(ctx.pathname).to.equal(base + (base && hashbang ? '#!' : '') +
               (decodeURLComponents ? '/long path with whitespace' : '/long%20path%20with%20whitespace'));
             done();
@@ -298,9 +298,13 @@
       });
 
       describe('ctx.params', function() {
-        it('should always be URL-decoded', function(done) {
+        it('should be URL-decoded unless configured not to', function(done) {
           page('/whatever/:param', function(ctx) {
-            expect(ctx.params.param).to.equal('param with whitespace');
+            if (decodeURLComponents) {
+              expect(ctx.params.param).to.equal('param with whitespace');
+            } else {
+              expect(ctx.params.param).to.equal('param%20with%20whitespace');
+            }
             done();
           });
 
