@@ -14,6 +14,7 @@
   },
   "scripts": {
     "test": "jshint index.js test/tests.js && mocha test/tests.js",
+    "test-old": "jshint test/tests.old.js && mocha test/tests.old.js",
     "serve": "serve test",
     "test-cov": "jscoverage index.js index-cov.js; PAGE_COV=1 mocha test/tests.js -R html-cov > coverage.html",
     "prepublish": "npm run make",
@@ -34,7 +35,10 @@
     "mocha": "^2.0.1",
     "mocha-lcov-reporter": "0.0.1",
     "serve": "*",
-    "should": "*"
+    "should": "*",
+    "sinon": "1.16.1",
+    "unexpected": "9.9.0",
+    "unexpected-sinon": "7.1.0"
   },
   "files": [
     "index.js",
