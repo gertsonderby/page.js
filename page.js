@@ -185,6 +185,22 @@
     window.removeEventListener('popstate', onpopstate, false);
   };
 
+
+  /**
+   * Unbind events, clear all routes and state. Useful for testing.
+   *
+   * @api public
+   */
+  page.reset = function () {
+    page.stop();
+    base = '';
+    page.callbacks = [];
+    page.exits = [];
+    dispatch = true;
+    decodeURLComponents = true;
+    prevContext = null;
+  };
+
   /**
    * Show `path` with optional `state` object.
    *

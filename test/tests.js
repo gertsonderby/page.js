@@ -94,10 +94,7 @@
 
       afterEach(function () {
         page.show('/');
-        page.stop();
-        page.callbacks = [];
-        page.exits = [];
-        page.base('');
+        page.reset();
       });
 
       describe('on startup', function () {
