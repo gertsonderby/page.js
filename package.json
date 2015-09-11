@@ -1,7 +1,7 @@
 {
   "name": "one.com-page",
   "description": "Tiny client-side router",
-  "version": "1.6.4-patch1",
+  "version": "1.6.4-patch2",
   "license": "MIT",
   "repository": {
     "type": "git",
