@@ -77,8 +77,8 @@
    *   page('/from', '/to')
    *   page();
    *
-   * @param {String|Function} path
-   * @param {Function} fn...
+   * @param {string|!Function|!Object} path
+   * @param {Function=} fn
    * @api public
    */
 
@@ -90,7 +90,7 @@
 
     // route <path> to <callback ...>
     if ('function' === typeof fn) {
-      var route = new Route(path);
+      var route = new Route(/** @type {string} */ (path));
       for (var i = 1; i < arguments.length; ++i) {
         page.callbacks.push(route.middleware(arguments[i]));
       }
@@ -112,7 +112,7 @@
 
   /**
    * Current path being processed
-   * @type {String}
+   * @type {string}
    */
   page.current = '';
 
@@ -130,7 +130,7 @@
   /**
    * Get or set basepath to `path`.
    *
-   * @param {String} path
+   * @param {string} path
    * @api public
    */
 
@@ -186,10 +186,11 @@
   /**
    * Show `path` with optional `state` object.
    *
-   * @param {String} path
-   * @param {Object} state
-   * @param {Boolean} dispatch
-   * @return {Context}
+   * @param {string} path
+   * @param {Object=} state
+   * @param {boolean=} dispatch
+   * @param {boolean=} push
+   * @return {!Context}
    * @api public
    */
 
@@ -212,8 +213,8 @@
    * Goes back in the history
    * Back should always let the current route push state and then go back.
    *
-   * @param {String} path - fallback path to go back if no more history exists, if undefined defaults to page.base
-   * @param {Object} [state]
+   * @param {string} path - fallback path to go back if no more history exists, if undefined defaults to page.base
+   * @param {Object=} state
    * @api public
    */
 
@@ -239,8 +240,8 @@
    * Register route to redirect from one path to other
    * or just redirect to another route
    *
-   * @param {String} from - if param 'to' is undefined redirects to 'from'
-   * @param {String} [to]
+   * @param {string} from - if param 'to' is undefined redirects to 'from'
+   * @param {string=} to
    * @api public
    */
   page.redirect = function(from, to) {
@@ -248,7 +249,7 @@
     if ('string' === typeof from && 'string' === typeof to) {
       page(from, function(e) {
         setTimeout(function() {
-          page.replace(to);
+          page.replace(/** @type {!string} */ (to));
         }, 0);
       });
     }
@@ -264,9 +265,11 @@
   /**
    * Replace `path` with optional `state` object.
    *
-   * @param {String} path
-   * @param {Object} state
-   * @return {Context}
+   * @param {string} path
+   * @param {Object=} state
+   * @param {boolean=} init
+   * @param {boolean=} dispatch
+   * @return {!Context}
    * @api public
    */
 
@@ -287,7 +290,6 @@
    * @param {Function} cb
    * @api private
    */
-
   page.dispatchExit = function (cb) {
     var prev = prevContext,
       i = 0;
@@ -313,7 +315,7 @@
   /**
    * Dispatch the entry routes for `ctx`.
    *
-   * @param {Object} ctx
+   * @param {Context} ctx
    * @api private
    */
 
@@ -358,7 +360,6 @@
    * @param {Context} ctx
    * @api private
    */
-
   function unhandled(ctx) {
     if (ctx.handled) return;
     var current;
@@ -397,7 +398,7 @@
    * Accommodates whitespace in both x-www-form-urlencoded
    * and regular percent-encoded form.
    *
-   * @param {str} URL component to decode
+   * @param {string} val - URL component to decode
    */
   function decodeURLEncodedURIComponent(val) {
     if (typeof val !== 'string') { return val; }
@@ -408,8 +409,9 @@
    * Initialize a new "request" `Context`
    * with the given `path` and optional initial `state`.
    *
-   * @param {String} path
-   * @param {Object} state
+   * @constructor
+   * @param {string} path
+   * @param {Object=} state
    * @api public
    */
 
@@ -475,8 +477,9 @@
    *   - `sensitive`    enable case-sensitive routes
    *   - `strict`       enable strict matching for trailing slashes
    *
-   * @param {String} path
-   * @param {Object} options.
+   * @constructor
+   * @param {string} path
+   * @param {Object=} options
    * @api private
    */
 
@@ -486,8 +489,7 @@
     this.method = 'GET';
     this.regexp = pathtoRegexp(this.path,
       this.keys = [],
-      options.sensitive,
-      options.strict);
+      options);
   }
 
   /**
@@ -517,9 +519,9 @@
    * Check if this route matches `path`, if so
    * populate `params`.
    *
-   * @param {String} path
+   * @param {string} path
    * @param {Object} params
-   * @return {Boolean}
+   * @return {boolean}
    * @api private
    */
 
